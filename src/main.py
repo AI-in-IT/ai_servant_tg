@@ -87,8 +87,12 @@ async def unreg(message: Message):
 
 @dp.message(Command("create_family"))
 async def cmd_create_family(message: Message):
+    if message.from_user.last_name is None:
+        family_name = message.from_user.first_name
+    else:
+        family_name = message.from_user.last_name
     family_res = await call_api("POST", "/families/", {
-        "title": message.from_user.last_name,
+        "title": family_name,
         "active": True
     })
     if not family_res["ok"]:
